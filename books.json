@@ -1,0 +1,37 @@
+{
+    "59a93b6c-034e-4fb9-9fe2-d000478f7267": {
+        "uuid": "59a93b6c-034e-4fb9-9fe2-d000478f7267",
+        "title": "The Enchanted Forest",
+        "status": "issued",
+        "year": "2000-02-02",
+        "author": "Eleanor Evergreen"
+    },
+    "79b3a6c2-1b3e-4bf8-9fe2-d000478f7268": {
+        "uuid": "79b3a6c2-1b3e-4bf8-9fe2-d000478f7268",
+        "title": "Mysteries of the Deep",
+        "status": "issued",
+        "year": "2015-06-15",
+        "author": "Marina Blue"
+    },
+    "85c4b7d3-2d4f-5cf9-8fe3-d000478f7269": {
+        "uuid": "85c4b7d3-2d4f-5cf9-8fe3-d000478f7269",
+        "title": "Galactic Adventures",
+        "status": "in_stock",
+        "year": "2021-11-23",
+        "author": "Cosmo Skywalker"
+    },
+    "91d5c8e4-3e5g-6dh0-7fe4-d000478f7270": {
+        "uuid": "91d5c8e4-3e5g-6dh0-7fe4-d000478f7270",
+        "title": "Secrets of the Sands",
+        "status": "issued",
+        "year": "2010-09-10",
+        "author": "Sahara Dunes"
+    },
+    "a2e6d9f5-4f6h-7ei1-8gf5-d000478f7271": {
+        "uuid": "a2e6d9f5-4f6h-7ei1-8gf5-d000478f7271",
+        "title": "Journey to the Stars",
+        "status": "in_stock",
+        "year": "1995-04-07",
+        "author": "Orion Nebula"
+    }
+}

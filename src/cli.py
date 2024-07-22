@@ -59,7 +59,7 @@ class Client:
                 cmd, client_input = self.wait_command()
                 client_input, args = self.parse_client_input(client_input)
                 cmd.load_args(args)
-                cmd.execute(client_input)
+                cmd.execute(client_input.strip())
                 self.split_command()
             except ApplicationException as e:
                 print(e.__doc__, e)

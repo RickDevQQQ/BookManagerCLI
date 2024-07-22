@@ -3,7 +3,10 @@ from typing import Any, Dict
 from src.core.arg import Arg, EnumArg
 from src.core.command import Command
 from src.commands.system.command import ExitCommand
-from src.commands.book.command import AddBookCommand
+from src.commands.book.command import (
+    AddBookCommand, RemoveBookCommand, SearchBookCommand, ChangeStatusBookCommand,
+    GetAllBookCommand
+)
 
 
 class HelpCommand(Command):
@@ -44,6 +47,10 @@ exit_command = ExitCommand()
 COMMANDS = (
     HelpCommand(),
     AddBookCommand(),
+    RemoveBookCommand(),
+    SearchBookCommand(),
+    GetAllBookCommand(),
+    ChangeStatusBookCommand(),
     exit_command
 )
 TRIGGERS = {}

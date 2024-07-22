@@ -1,5 +1,4 @@
 from abc import ABC
-from enum import Enum
 from typing import Type, TypeVar, Generic, Optional, Any
 import datetime as dt
 from src.error import TransformError
@@ -23,14 +22,17 @@ class Arg(Generic[T], ABC):
         self._description = description
         self._example = example
 
-    @property
-    def value(self) -> Optional[T]:
+    def _transform(self) -> Optional[T]:
         if self._value is None:
             return None
         try:
             return self._arg_type(self._value)
         except Exception as e:
             raise TransformError(f'Произошла ошибка трансформации, проверьте данные. Ошибка: {e}')
+
+    @property
+    def value(self) -> Optional[T]:
+        return self._transform()
 
     @value.setter
     def value(self, value: Any) -> None:
@@ -53,12 +55,12 @@ class Arg(Generic[T], ABC):
         return self._arg_type
 
 
-class EnumArg(Arg[Enum]):
+class EnumArg(Arg[T]):
 
     def __init__(
         self,
+        arg_type: Type[T],
         default: Any = None,
-        arg_type: Type[Enum] = str,
         required: bool = False,
         description: Optional[str] = None,
         example: Optional[str] = None
@@ -71,10 +73,6 @@ class EnumArg(Arg[Enum]):
             example=example
         )
 
-    def get_values(self):
-        """Получить возможные аргументы ENUM"""
-        pass
-
 
 class DateArg(Arg[dt.date]):
 
@@ -83,7 +81,7 @@ class DateArg(Arg[dt.date]):
         default: Any = None,
         required: bool = False,
         description: Optional[str] = None,
-        example: Optional[str] = None
+        example: str = '2024-07-22'
     ):
         super().__init__(
             default=default,
@@ -93,8 +91,7 @@ class DateArg(Arg[dt.date]):
             example=example
         )
 
-    @property
-    def value(self) -> Optional[T]:
+    def _transform(self) -> Optional[T]:
         if self._value is None:
             return None
         try:

@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 from uuid import uuid4
 
 from src.commands.book.dto import CreateBookDTO, BookDTO, UpdateBookDTO
@@ -34,16 +34,21 @@ class BookService:
 
     def get_all(
         self,
-        title: str = '',
-        author: str = '',
-        year: str = '',
+        title: Optional[str] = None,
+        author: Optional[str] = None,
+        year: Optional[str] = None,
     ) -> List[BookDTO]:
+
+        title = title or ''
+        author = author or ''
+        year = year or ''
+
         return [
             BookMapper.from_dict_to_dto(item)
             for item in filter(
                 lambda item:
-                title in item['title'] and
-                author in item['author'] and
+                title.lower() in item['title'].lower() and
+                author.lower() in item['author'].lower() and
                 year in item['year'],
                 self.book_storage.get_all().values()
             )
@@ -55,8 +60,8 @@ class BookService:
         value = {
             'uuid': uuid,
             'title': book.title if dto.title is None else dto.title,
-            'status': book.status if dto.status is None else dto.status,
-            'year': book.year if dto.year is None else dto.year,
+            'status': book.status.value if dto.status is None else dto.status.value,
+            'year': book.year.isoformat() if dto.year is None else dto.year.isoformat(),
             'author': book.author if dto.author is None else dto.author
         }
         self.book_storage.insert(key=uuid, value=value)

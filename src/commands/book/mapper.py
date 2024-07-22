@@ -3,6 +3,8 @@ from typing import Dict
 from src.commands.book.dto import BookDTO, CreateBookDTO
 import datetime as dt
 
+from src.commands.book.enum import BookStatus
+
 
 class BookMapper:
 
@@ -11,7 +13,7 @@ class BookMapper:
         return BookDTO(
             uuid=data['uuid'],
             title=data['title'],
-            status=data['status'],
+            status=BookStatus(data['status']),
             year=dt.date.fromisoformat(data['year']),
             author=data['author']
         )
@@ -21,7 +23,7 @@ class BookMapper:
         return {
             'uuid': uuid,
             'title': dto.title,
-            'status': dto.status,
-            'year': dto.year,
+            'status': dto.status.value,
+            'year': dto.year.isoformat(),
             'author': dto.author,
         }

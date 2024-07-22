@@ -38,7 +38,7 @@ class Command(ABC):
             arg = self.__command_args__.get(key)
             if not arg:
                 continue
-            arg.value = value
+            arg.value = value.strip()
         self.validate_args()
 
     @abstractmethod

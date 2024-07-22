@@ -1,5 +1,5 @@
 from src.commands.book.enum import BookStatus
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import datetime as dt
 
 
@@ -13,13 +13,13 @@ class CreateBookDTO:
 
 @dataclass(frozen=True)
 class UpdateBookDTO(CreateBookDTO):
-    title: str | None
-    status: BookStatus | None
-    author: str | None
-    year: dt.date | None
+    title: str | None = field(default=None)
+    status: BookStatus | None = field(default=None)
+    author: str | None = field(default=None)
+    year: dt.date | None = field(default=None)
 
 
-@dataclass(frozen=True)
+@dataclass()
 class BookDTO:
     uuid: str
     title: str

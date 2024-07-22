@@ -1,44 +1,104 @@
+from abc import ABC
 from enum import Enum
-from typing import Type, TypeVar, Generic
+from typing import Type, TypeVar, Generic, Optional, Any
 import datetime as dt
-from dataclasses import dataclass, field
-
 from src.error import TransformError
 
 T = TypeVar('T')
 
 
-@dataclass(frozen=True)
-class Arg(Generic[T]):
-    description: str
-    type: Type[T]
-    required: bool = field(default=False)
-    example: str | None = field(default=None)
+class Arg(Generic[T], ABC):
 
-    def transform(self, value) -> T:
+    def __init__(
+        self,
+        default: Any = None,
+        arg_type: Type[T] = str,
+        required: bool = False,
+        description: Optional[str] = None,
+        example: Optional[str] = None
+    ):
+        self._value = default
+        self._arg_type = arg_type
+        self._required = required
+        self._description = description
+        self._example = example
+
+    @property
+    def value(self) -> Optional[T]:
+        if self._value is None:
+            return None
         try:
-            return self.type(value)
+            return self._arg_type(self._value)
         except Exception as e:
             raise TransformError(f'Произошла ошибка трансформации, проверьте данные. Ошибка: {e}')
 
+    @value.setter
+    def value(self, value: Any) -> None:
+        self._value = value
 
-@dataclass(frozen=True)
-class StringArg(Arg[str]):
-    type: Type[str] = field(default=str)
+    @property
+    def required(self) -> bool:
+        return self._required
+
+    @property
+    def description(self) -> Optional[str]:
+        return self._description
+
+    @property
+    def example(self) -> Optional[str]:
+        return self._example
+
+    @property
+    def arg_type(self):
+        return self._arg_type
 
 
-@dataclass(frozen=True)
 class EnumArg(Arg[Enum]):
-    type: Type[Enum]
+
+    def __init__(
+        self,
+        default: Any = None,
+        arg_type: Type[Enum] = str,
+        required: bool = False,
+        description: Optional[str] = None,
+        example: Optional[str] = None
+    ):
+        super().__init__(
+            default=default,
+            arg_type=arg_type,
+            required=required,
+            description=description,
+            example=example
+        )
+
+    def get_values(self):
+        """Получить возможные аргументы ENUM"""
+        pass
 
 
-@dataclass(frozen=True)
 class DateArg(Arg[dt.date]):
-    type: Type[dt.date] = field(default=dt.date)
-    example: str = field(default='2024-07-20')
 
-    def transform(self, value) -> dt.date:
+    def __init__(
+        self,
+        default: Any = None,
+        required: bool = False,
+        description: Optional[str] = None,
+        example: Optional[str] = None
+    ):
+        super().__init__(
+            default=default,
+            arg_type=dt.date,
+            required=required,
+            description=description,
+            example=example
+        )
+
+    @property
+    def value(self) -> Optional[T]:
+        if self._value is None:
+            return None
         try:
-            return dt.date.fromisoformat(value)
-        except ValueError as e:
+            return self._arg_type.fromisoformat(self._value)
+        except Exception as e:
             raise TransformError(f'Произошла ошибка трансформации, проверьте данные. Ошибка: {e}')
+

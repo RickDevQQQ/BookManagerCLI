@@ -1,22 +1,25 @@
 from typing import Any, Dict
 
-from src.commands.book.command import add_book_command
 from src.core.arg import Arg, EnumArg
 from src.core.command import Command
-from src.commands.system.command import exit_command
+from src.commands.system.command import ExitCommand
+from src.commands.book.command import AddBookCommand
 
 
 class HelpCommand(Command):
+    full_name = 'help'
+    description = 'Получить подробную информацию'
+    other_trigger_name = ('h',)
 
     @staticmethod
     def args_info(cmd: Command) -> None:
         print(f'Поддерживает следующие аргументы:')
-        for key, arg in cmd.args.items():
+        for key, arg in cmd.__command_args__.items():
             text = f'{'[*]' if arg.required else '[ ]'} {key}. {arg.description} '
             if arg.example:
                 text += f'[Пример: {arg.example}] '
             if isinstance(arg, EnumArg):
-                values = ', '.join([member.value for member in arg.type.__members__.values()])
+                values = ', '.join([member.value for member in arg.arg_type.__members__.values()])
                 text += f"\n\t ~ Поддерживает следующие значения: [{values}]"
             print(text)
 
@@ -30,22 +33,18 @@ class HelpCommand(Command):
 
             print(text)
 
-            if cmd.args:
+            if cmd.__command_args__:
                 self.args_info(cmd)
 
     def execute(self, client_input: str, **kwargs: Dict[Arg, Any]) -> None:
         self.all_command()
 
 
-help_command = HelpCommand(
-    full_name='help',
-    description='Получить подробную информацию',
-    other_trigger_name=('h',)
-)
+exit_command = ExitCommand()
 COMMANDS = (
-    help_command,
-    exit_command,
-    add_book_command
+    HelpCommand(),
+    AddBookCommand(),
+    exit_command
 )
 TRIGGERS = {}
 for command in COMMANDS:

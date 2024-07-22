@@ -1,4 +1,4 @@
-from typing import Tuple, Mapping, Any, List, Dict
+from typing import Tuple, Mapping, Any, List
 
 from src.commands.command import TRIGGERS, exit_command
 from src.core.command import Command

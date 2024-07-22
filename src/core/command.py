@@ -44,20 +44,3 @@ class Command(ABC):
     @abstractmethod
     def execute(self, value: str) -> None:
         ...
-
-#
-# class DefaultCommand(Command):
-#     a = Arg(required=True, description="asddas", example="Asdasd")
-#
-# class MyCommand(DefaultCommand):
-#     full_name = 'my-command'
-#     description = 'asdasd'
-#     other_trigger_name = ('asd',)
-#     title = Arg(required=True, description="Заголовок книги", example="Супер пупер книга")
-#
-#     def execute(self, value: str) -> None:
-#         print(self.title.value)
-#
-# a = MyCommand()
-# a.load_args({'titlea': 'asdas'})
-# a.execute('asdasd')
